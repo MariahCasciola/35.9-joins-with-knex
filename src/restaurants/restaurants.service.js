@@ -28,7 +28,16 @@ function list() {
 
 function listAverageRatingByOwner() {
   // your solution here
-  return [];
+  return knex("restaurants as r")
+    .join("owners as o", "r.owner_id", "o.owner_id")
+    .select("o.owner_name")
+    .avg("r.rating")
+    .groupBy("owner_name")
+    .then((data) => {
+      return data.map(({avg, owner_name}) => {
+        return { avg: Number(avg), owner_name };
+      });
+    });
 }
 
 function read(restaurant_id) {
