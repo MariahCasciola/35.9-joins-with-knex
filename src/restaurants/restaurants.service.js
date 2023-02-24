@@ -21,7 +21,9 @@ function destroy(restaurant_id) {
 }
 
 function list() {
-  return knex(tableName).select("*");
+  return knex("restaurants as r")
+    .join("owners as o", "r.owner_id", "o.owner_id")
+    .select("r.restaurant_name", "o.owner_name", "o.email");
 }
 
 function listAverageRatingByOwner() {
